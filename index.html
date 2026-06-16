@@ -8,7 +8,7 @@
 </head>
 <body class="auth-body">
 
-    <div id="loginPage" class="auth-container">
+    <div class="auth-container">
         <form id="loginForm">
             <div class="input-group">
                 <label for="loginUser">Имя пользователя</label>
@@ -25,62 +25,16 @@
 
         <div class="auth-footer">
             <p>Нет аккаунта? Зарегистрироваться</p>
-            <button type="button" class="btn-secondary" onclick="showRegisterPage()">Регистрация</button>
+            <button type="button" class="btn-secondary" onclick="window.location.href='register.html'">Регистрация</button>
         </div>
     </div>
 
-    <div id="registerPage" class="auth-container" style="display: none;">
-        <form id="registerForm">
-            <div class="input-group">
-                <label for="regUser">Придумайте имя</label>
-                <input type="text" id="regUser" placeholder="Придумайте имя" required>
-            </div>
-            
-            <div class="input-group">
-                <label for="regPass">Придумайте пароль</label>
-                <input type="password" id="regPass" placeholder="Придумайте пароль" required>
-            </div>
-            
-            <button type="submit" class="btn-green">Создать аккаунт</button>
-        </form>
-    </div>
-
     <script>
-        // Если сессия активна — сразу кидаем в каталог
+        // Защита: если уже вошли, перекидываем на cataloging.html
         if (localStorage.getItem('currentSession')) {
-            window.location.href = './cataloging.html';
+            window.location.href = 'cataloging.html';
         }
 
-        // Переключение экранов без перезагрузки страниц
-        function showRegisterPage() {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('registerPage').style.display = 'block';
-            document.title = 'Регистрация';
-        }
-
-        function showLoginPage() {
-            document.getElementById('loginPage').style.display = 'block';
-            document.getElementById('registerPage').style.display = 'none';
-            document.title = 'Вход';
-        }
-
-        // Обработка регистрации
-        document.getElementById('registerForm').onsubmit = function(e) {
-            e.preventDefault();
-            const u = document.getElementById('regUser').value.trim();
-            const p = document.getElementById('regPass').value;
-
-            if (!u || !p) return;
-
-            localStorage.setItem('user_' + u, p);
-            alert('Аккаунт успешно создан!');
-            
-            document.getElementById('loginUser').value = u;
-            showLoginPage();
-            document.getElementById('registerForm').reset();
-        };
-
-        // Обработка входа
         document.getElementById('loginForm').onsubmit = function(e) {
             e.preventDefault();
             const u = document.getElementById('loginUser').value.trim();
@@ -89,7 +43,7 @@
 
             if (savedPassword && savedPassword === p) {
                 localStorage.setItem('currentSession', u);
-                window.location.href = './cataloging.html';
+                window.location.href = 'cataloging.html'; // Исправленный путь
             } else {
                 alert('Неверное имя пользователя или пароль!');
             }
