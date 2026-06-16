@@ -1,76 +1,52 @@
-// Глобальный стейт текущего выбранного элемента
-let activeProduct = {
-    name: "",
-    price: 0
-};
+if (document.getElementById('clientName')) {
+    document.getElementById('clientName').value = localStorage.getItem('currentSession') || "";
+}
 
-// База контента по объектам (чтобы структура выглядела естественно)
+function logout() {
+    localStorage.removeItem('currentSession');
+    window.location.href = './index.html';
+}
+
+let activeProduct = { name: "", price: 0 };
+
 const db = {
     "Tree Of Life": {
         category: "Базы отдыха",
         img: "https://edge.travelatacdn.ru/thumbs/640x480/upload/2020_38/content_hotel_5f67c0faa6a551.43553606.jpg",
         price: 39600,
-        desc: 'Пляжный курорт Tree Of Life расположен на побережье Каспийского моря в 25 километрах от центра города Актау. Необыкновенные красоты этого места зачаровывают, а морской воздух бодрит и освежает. Благодаря целебному Каспийскому климату отдых на берегу моря полезен для здоровья и приятен для души. При испарении морской воздух насыщается не только полезными минералами, но и органическими соединениями, продуктами их разложения: свободным азотом, водородом, диоксидом углерода. Высокий уровень ионизации создается и за счет присутствия в атмосфере значительного количества инертных газов: ксенона, неона, гелия и криптона Каспийское море отличается своим богатством на йод, помимо остальных полезных веществ присущим морям. Такой дозы ионизированный морской воздух позволяет улучшить вентиляцию легких и стабилизировать работу сердечной мышцы, обеспечить максимальное усвоение кислорода и вывести углекислый газ, активизировать синтез жизненно важных для организма аскорбиновой кислоты и витаминов группы В.'
+        desc: 'Пляжный курорт Tree Of Life на побережье Каспийского моря.'
     },
     "Bluemarine Aqtau": {
         category: "Базы отдыха",
         img: "https://www.lada.kz/uploads/posts/2017-05/1496058229_sanset.jpg",
         price: 45000,
-        desc: 'Лучшая недорогая база отдыха в Актау.'
+        desc: 'База отдыха Bluemarine в Актау.'
     },
     "FREEDOM Beach&resort": {
         category: "Базы отдыха",
         img: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/343249189.jpg?k=61949dbd89ecddeff5023c35c86ee03ecc813b7dbb97866ee51a67c7699defcc&o=",
         price: 34000,
-        desc: 'Размещение в базе отдыха Freedom (Фридом) города Капчагай, осуществляется в корпусе в 2-х местных номерах (67 номеров) (Кондиционер, спутниковое телевидение). Также в 2-х этажных коттеджах (6 коттеджей) с открытой терассой на втором этаже с видом на водохранилище Капчагай. 6 VIP-коттеджей с видом на море с открытой терассы база отдыха "Freedom" (Beach resort & SPA). К услугам отдыхающих базы отдыха: ресторанно-гостиничный центр, танцпол, SPA центр, две сауны на десять человек каждая. Клубная и танцевальная музыка.'
+        desc: 'Комплекс отдыха Freedom на Капчагае.'
     },
     "Горный поход Кок Жайляу": {
         category: "Туры",
         img: "https://gorny-club.kz/wp-content/uploads/2016/10/9IZeMkHNYe64dm73Ec1zFlI0Lx2GLB-1.jpg",
         price: 5000,
-        desc: 'Кок Джайляу красивейшее и живописное место в которое можно попасть из Большого и Малого Алматинских ущелий. Город Алматы – Большое Алматинское ущелье – Малое Алматинчское ущелье – Кок Джайляу – пик 3 Брата – пик Кумбель – город Алматы Расстояние: 20 км Сезон: Июнь - Август, зимнее время Лучшее время: полный сезон Группа: 1-5 чел Дней\\ночей: 1 день'
+        desc: 'Пеший маршрут в горах Алматы.'
     },
     "Треккинг Ущелье Чукур": {
         category: "Туры",
         img: "https://avatars.mds.yandex.net/i?id=d9d31c01b6061b598c5d1cf540c7983f_l-2286743-images-thumbs&n=13",
         price: 7000,
-        desc: 'Дорогие друзья, ваши ощущения от сегодняшнего похода на Большое Алматинское озеро будут заметно отличаться от того, if бы вы решили поехать туда на авто. Дело в том, что раньше дорога на БАО была доступна лишь внедорожникам. Сейчас же туда проложили асфальт. И теперь доступность озера для большинства людей и машин ощутимо возросла. Поэтому сегодня наш путь будет проходить вне шума и суеты, присущим местам большого скопления туристов. Пеший поход по территории ГНПП Иле Алатау подарит вам массу положительных впечатлений. А также возможность послушать пение птиц, подышать чистейшим горным воздухом и уединиться на фоне дикой природы. Ну и посещение водопада Чукур и Большого Алматинского озера будет, конечно, обязательной частью нашей программы.'
-    },
-    "Тур озеро Жасылколь Джунгария": {
-        category: "Туры",
-        img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/ea/ae/be/caption.jpg?w=1400&h=-1&s=1",
-        price: 10000,
-        desc: 'Подробный маршрут на озеро Жасылколь: город Алматы – город Капчагай – железнодорожная станция Сарыозек – город Талдыкорган – поселок Сарканд – поселок Покатиловка – пасека Пшеничного – озеро Жасылколь 1640 метров над уровнем моря (462 км) Жасылколь высокогорное красивейшее озеро, расположено в горах Джунгарского Алатау, в горном ущелье Агыныкаты, на высоте 1630 метров над уровнем моря, озеро входит в состав Жонгар-Алатауского природного заповедника и национального парка Казахстана. От поселка Лепсы до озера Жасылколь расстояние составляет 15 км. В озеро спадает река Агыныкатты, вода в озере бирюзового цвета. Вода в озере очень холодная, по желанию в озере Жасылколь можно искупаться, но рекомендуется не отплывать далеко от берега. Температура воды в летнее время составляет 10 градусов тепла. Озеро Жасылколь находится в горной местности поэтому путешествие к озеру лучше всего осуществлять на авто джипах 4х4. Так же на озере Жасылколь отсутствует туристская инфраструктура поэтому все необходимое оборудование для установки базового лагеря необходимо везти с собой, палатки, спальные мешки, кухонное оборудование и т.д. От места основной стоянки и нашего базового лагеря до озера Жасылколь расстояние составлет 9 км. К озеру ведет горная тропа, которая пересекает густой хвойный лес, красивые лесные полянки и березовый лес. Путешествовать к озеру Жасылколь мы рекомендуем с гидом, который хорошо знает местность, так же на месте можно воспользоваться услугами местного проводника.'
-    },
-    "Санаторий Салма-Караван": {
-        category: "Оздоровительный отдых",
-        img: "https://img02.flagma.kz/photo/sanatoriy-saryagash-salma-karavan-3161813_big.jpg",
-        price: 10000,
-        desc: 'Санаторий Салма-Караван это комплекс лечебного отдыха, основанный на лечении органов желудочно-кишечного тракта. Помимо профессионального и эффективного лечения, здесь вы насладитесь живописными Казахстанскими просторами, чистейшим степным воздухом и самой вкусной восточной кухней в ресторане санатория Салма-Караван.'
-    },
-    "Санаторий Жансая": {
-        category: "Оздоровительный отдых",
-        img: "https://images.satu.kz/6598338_w700_h500_sanatorij-saryagash-zhansaya.jpg",
-        price: 15000,
-        desc: 'Предлагаем Вам отдых и лечение в элитном санатории «Жансая» расположенный на территории известного курорта «Сарыагаш»! Самые лучшие условия в наших комфортабельных и уютных номерах, а также доброжелательный и профессиональный персонал сделают Ваше лечение эффективным, а отдых незабываемым! Одним из природных факторов, способствующих высокой эффективности лечения — минеральная вода «Сарыагаш».'
-    },
-    "Санаторий Маржан-Су": {
-        category: "Оздоровительный отдых",
-        img: "https://sanatoriums-saryagash.kz/img/sanatoriums/marzhansu/img/1.jpg",
-        price: 14000,
-        desc: 'Санаторий Маржан Су расположен на территории курорта Сарыгаш, в Южно-Казахстанской области. Общая информация: В Сарыагаше открылся новый санаторий "Маржан Су", который предлагает оздоровительные процедуры и полноценный отдых на основе широко известной минеральной воды "Сарыагаш". Номера и цены: Санаторий Маржан Су предлагает размещение в уютных номерах категории стандарт, полулюкс, люкс. В каждом номере имеются санузел с душевой, телевизор, холодильник, свежий евроремонт. Цены на путевки весьма доступные, зависят от типа номеров, который Вы выберете.'
+        desc: 'Горный треккинг в ущелье Чукур.'
     }
 };
 
-// Скролл к якорям разделов
 function scrollToSection(key) {
     const el = document.getElementById('sec-' + key);
-    if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Открытие карточки
 function showItemDetails(name) {
     const item = db[name];
     if (!item) return;
@@ -78,20 +54,14 @@ function showItemDetails(name) {
     activeProduct.name = name;
     activeProduct.price = item.price;
 
-    // Отрисовываем текстовку в DOM
     document.getElementById('itemTitle').innerText = name;
-    document.getElementById('crActive').innerText = name;
-    document.getElementById('crCategory').innerText = item.category;
     document.getElementById('itemDesc').innerText = item.desc;
     document.getElementById('itemMainImg').src = item.img;
 
-    // Локация
     let locationText = "📍 Алматинская область";
     if (name.includes("Life") || name.includes("Bluemarine")) locationText = "📍 Мангистауская область";
-    if (name.includes("Санаторий")) locationText = "📍 Туркестанская область";
     document.getElementById('itemLoc').innerText = locationText;
 
-    // Свитч экранов
     document.getElementById('catalogPage').style.display = "none";
     document.getElementById('detailsPage').style.display = "block";
     window.scrollTo(0, 0);
@@ -103,37 +73,35 @@ function backToCatalog() {
     window.scrollTo(0, 0);
 }
 
-// Обработка отправки формы
 const form = document.getElementById('orderForm');
 const tableBody = document.getElementById('reportEntries');
 
-form.onsubmit = function(e) {
-    e.preventDefault();
+if (form) {
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        const client = document.getElementById('clientName').value;
+        const t1 = new Date(document.getElementById('dateStart').value);
+        const t2 = new Date(document.getElementById('dateEnd').value);
 
-    const client = document.getElementById('clientName').value;
-    const t1 = new Date(document.getElementById('dateStart').value);
-    const t2 = new Date(document.getElementById('dateEnd').value);
+        const diffHours = (t2 - t1) / (1000 * 60 * 60);
+        if (diffHours <= 0) {
+            alert("Конец брони должен быть позже начала!");
+            return;
+        }
 
-    // Расчет разницы по часам
-    const diffHours = (t2 - t1) / (1000 * 60 * 60);
-    if (diffHours <= 0) {
-        alert("Конец брони должен быть позже начала!");
-        return;
-    }
-
-    const cost = Math.ceil(diffHours) * activeProduct.price;
-
-    // Конструируем строку таблицы
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${client}</td>
-        <td>${activeProduct.name}</td>
-        <td><strong>${cost.toLocaleString()} ₸</strong></td>
-    `;
-    
-    tableBody.appendChild(row);
-    
-    form.reset();
-    alert("Успешно оформлено!");
-    backToCatalog();
-};
+        const cost = Math.ceil(diffHours) * activeProduct.price;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td style="padding: 10px; border: 1px solid #ddd;">${client}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">${activeProduct.name}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;"><strong>${cost.toLocaleString()} ₸</strong></td>
+        `;
+        
+        tableBody.appendChild(row);
+        form.reset();
+        document.getElementById('clientName').value = localStorage.getItem('currentSession');
+        
+        alert("Успешно оформлено!");
+        backToCatalog();
+    };
+}
