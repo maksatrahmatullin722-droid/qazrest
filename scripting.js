@@ -1,19 +1,3 @@
-// Автоматически подставляем имя вошедшего юзера при загрузке страницы, если оно есть в сессии
-if (document.getElementById('clientName')) {
-    document.getElementById('clientName').value = localStorage.getItem('currentSession') || "";
-}
-
-// Выход из системы
-function logout() {
-    localStorage.removeItem('currentSession');
-    // Обнуляем поля ввода авторизации
-    document.getElementById('loginUser').value = "";
-    document.getElementById('loginPass').value = "";
-    // Переключаем экраны обратно
-    document.getElementById('authPage').style.display = 'flex';
-    document.getElementById('appContent').style.display = 'none';
-}
-
 let activeProduct = { name: "", price: 0 };
 
 const db = {
@@ -39,7 +23,7 @@ const db = {
         category: "Туры",
         img: "https://gorny-club.kz/wp-content/uploads/2016/10/9IZeMkHNYe64dm73Ec1zFlI0Lx2GLB-1.jpg",
         price: 5000,
-        desc: 'Популярный и невероятно живописный пеший маршрут в Иле-Алатауском национальном парке Алматы.'
+        desc: 'Популярный и невероятно живописный пеший маршрут в горах Алматы.'
     },
     "Треккинг Ущелье Чукур": {
         category: "Туры",
@@ -51,7 +35,7 @@ const db = {
         category: "Оздоровительный отдых",
         img: "https://img02.flagma.kz/photo/sanatoriy-saryagash-salma-karavan-3161813_big.jpg",
         price: 10000,
-        desc: 'Современный оздоровительный санаторий в знаменитой курортной минеральной зоне Сарыагаш.'
+        desc: 'Оздоровительный отдых в курортной зоне Сарыагаш.'
     }
 };
 
@@ -113,7 +97,6 @@ if (form) {
         
         tableBody.appendChild(row);
         form.reset();
-        document.getElementById('clientName').value = localStorage.getItem('currentSession');
         
         alert("Успешно оформлено!");
         backToCatalog();
